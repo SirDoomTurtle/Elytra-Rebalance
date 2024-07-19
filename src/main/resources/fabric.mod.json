@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "dooms-elytra-rebalance",
+	"version": "${version}",
+	"name": "Elytra Rebalance",
+	"description": "A mod for adjusting elytra speed and durability.",
+	"authors": [
+		"Sir Doom Turtle"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/elytrarebalance/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "net.doomturtle.elytrarebalance.DoomsElytraMod"
+		],
+		"client": [
+			"net.doomturtle.elytrarebalance.DoomsElytraModClient"
+		],
+		"fabric-datagen": [
+			"net.doomturtle.elytrarebalance.DoomsElytraModDataGenerator"
+		]
+	},
+	"mixins": [
+		"elytrarebalance.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
