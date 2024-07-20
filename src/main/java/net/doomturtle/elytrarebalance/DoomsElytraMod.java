@@ -16,7 +16,7 @@ public class DoomsElytraMod implements ModInitializer {
 
 	public static final String MOD_ID = "dooms-elytra-rebalance";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static float elytra_speed_config = 1.0f;
+	public static double elytra_speed_config = 1.0f;
 	public static int elytra_durability_config = 432;
 
 	@Override
@@ -24,27 +24,13 @@ public class DoomsElytraMod implements ModInitializer {
 	{
 		LOGGER.info("Sir Doom Turtle's Elytra Rebalance Mod Initialized");
 
-		ModConfig.init();
-		elytra_speed_config = Math.max(0.0f, Math.min(ModConfig.elytra_speed_multiplier, 1.0f));
-		elytra_durability_config = Math.max(1, Math.min(ModConfig.elytra_durability, 9999));
-		
-
-		File configFile = new File("config/dooms-elytra-rebalance.toml");
-		if (configFile.exists())
-		{
-			try
-			{
-				ConfigUtils.injectCommentsIntoConfigFile(configFile);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		ModConfig CONFIG = new ModConfig();
+		elytra_speed_config = Math.max(0.0, Math.min(CONFIG.getElytraSpeedModifier(), 1.0));
+		elytra_durability_config = Math.max(1, Math.min(CONFIG.getElytraDurability(), 9999));
 
 
-		LOGGER.info("Elytra Speed Multiplier set to " + ModConfig.elytra_speed_multiplier );
-		LOGGER.info("Elytra Durability set to " + ModConfig.elytra_durability );
+		LOGGER.info("Elytra Speed Multiplier set to " + CONFIG.getElytraSpeedModifier() );
+		LOGGER.info("Elytra Durability set to " + CONFIG.getElytraDurability() );
 
 		ServerTickEvents.START_SERVER_TICK.register(
 				server -> {
@@ -75,7 +61,7 @@ public class DoomsElytraMod implements ModInitializer {
 	 */
 	private void reduceElytraSpeed(PlayerEntity player)
 	{
-		float elytra_speed_multiplier = elytra_speed_config;
+		double elytra_speed_multiplier = elytra_speed_config;
 		if (elytra_speed_multiplier == 1.0f)
 		{
 			return;
