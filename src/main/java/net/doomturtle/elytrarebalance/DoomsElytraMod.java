@@ -1,10 +1,7 @@
 package net.doomturtle.elytrarebalance;
 
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-
-import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +11,13 @@ import java.io.File;
 import java.io.IOException;
 
 
+
 public class DoomsElytraMod implements ModInitializer {
 
 	public static final String MOD_ID = "dooms-elytra-rebalance";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-
+	public static float elytra_speed_config = 1.0f;
+	public static int elytra_durability_config = 432;
 
 	@Override
 	public void onInitialize()
@@ -26,21 +25,26 @@ public class DoomsElytraMod implements ModInitializer {
 		LOGGER.info("Sir Doom Turtle's Elytra Rebalance Mod Initialized");
 
 		ModConfig.init();
-		// decorate config file with comments
+		elytra_speed_config = Math.max(0.0f, Math.min(ModConfig.elytra_speed_multiplier, 1.0f));
+		elytra_durability_config = Math.max(1, Math.min(ModConfig.elytra_durability, 9999));
+		
+
 		File configFile = new File("config/dooms-elytra-rebalance.toml");
 		if (configFile.exists())
 		{
 			try
 			{
 				ConfigUtils.injectCommentsIntoConfigFile(configFile);
-				System.out.println("Config file modified with comments.");
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
 
-		LOGGER.info("Elytra Speed Multiplier set to " + ModConfig.get().elytraSpeedMultiplier );
+
+		LOGGER.info("Elytra Speed Multiplier set to " + ModConfig.elytra_speed_multiplier );
+		LOGGER.info("Elytra Durability set to " + ModConfig.elytra_durability );
 
 		ServerTickEvents.START_SERVER_TICK.register(
 				server -> {
@@ -50,6 +54,10 @@ public class DoomsElytraMod implements ModInitializer {
 						}}
 				}
 		);
+
+
+
+
 	}
 
 
@@ -67,8 +75,7 @@ public class DoomsElytraMod implements ModInitializer {
 	 */
 	private void reduceElytraSpeed(PlayerEntity player)
 	{
-		float elytra_speed_multiplier = ModConfig.get().elytraSpeedMultiplier;
-		elytra_speed_multiplier = Math.max(0.0f, Math.min(elytra_speed_multiplier, 1.0f));
+		float elytra_speed_multiplier = elytra_speed_config;
 		if (elytra_speed_multiplier == 1.0f)
 		{
 			return;
@@ -78,15 +85,18 @@ public class DoomsElytraMod implements ModInitializer {
 		double velocity_length = velocity.length();
 
 		float max_horizontal_speed = 1.66f;
-		double dynamic_threshold = elytra_speed_multiplier * max_horizontal_speed;
 		double smoothing_factor = 0.3;
+		double dynamic_threshold = elytra_speed_multiplier * ((1-smoothing_factor) * max_horizontal_speed);
+
 
 		boolean angle_check = playerFlyingHorizontal(velocity);
 
 		if (velocity_length > dynamic_threshold && angle_check)
 		{
 			Vec3d target_velocity = velocity.normalize().multiply(elytra_speed_multiplier * velocity_length);
-			Vec3d new_velocity = velocity.multiply(1 - smoothing_factor).add(target_velocity.multiply(smoothing_factor));
+			Vec3d velocity_diff = velocity.subtract(target_velocity);
+
+			Vec3d new_velocity = velocity.subtract(velocity_diff.multiply(smoothing_factor));
 
 			player.setVelocity(new_velocity);
 			player.velocityModified = true;

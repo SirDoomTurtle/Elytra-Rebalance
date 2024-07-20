@@ -6,30 +6,29 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.io.*;
+import java.nio.file.*;
+import java.util.List;
+
 public class ConfigUtils {
 
-    public static void injectCommentsIntoConfigFile(File file) throws IOException {
-        // Read the existing content
-        StringBuilder content = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+    public static void injectCommentsIntoConfigFile(File configFile) throws IOException {
+        Path path = configFile.toPath();
+        List<String> lines = Files.readAllLines(path);
+
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            for (String line : lines) {
+                if (line.trim().startsWith("elytra_speed_multiplier")) {
+                    writer.write("\n# This multiplier affects the speed of the Elytra.\n");
+                    writer.write("# Setting this to 1.0 will use the default speed without modification.\n");
+                    writer.write("# Accepted values from 0.0 to 1.0\n");
+                } else if (line.trim().startsWith("elytra_durability")) {
+                    writer.write("\n# This value sets the custom durability of the Elytra.\n");
+                    writer.write("# Accepted values from 1 to 9999\n");
+                }
+                writer.write(line);
+                writer.newLine();
             }
-        }
-
-        // Add comments to the beginning
-        String comments = "# Elytra Rebalance Configuration File\n\n" +
-                "# General settings\n" +
-                "[general]\n" +
-                "# This multiplier affects the speed of the Elytra.\n" +
-                "# Setting this to 1.0 will use the default speed without modification.\n" +
-                "# Values between 0.0 and 1.0 will reduce the speed.\n";
-
-        // Write the comments and existing content back to the file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write(comments);
-            writer.write(content.toString());
         }
     }
 }
