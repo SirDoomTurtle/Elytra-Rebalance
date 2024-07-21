@@ -7,10 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.io.File;
-import java.io.IOException;
-
-
 
 public class DoomsElytraMod implements ModInitializer {
 
@@ -28,7 +24,6 @@ public class DoomsElytraMod implements ModInitializer {
 		elytra_speed_config = Math.max(0.0, Math.min(CONFIG.getElytraSpeedModifier(), 1.0));
 		elytra_durability_config = Math.max(1, Math.min(CONFIG.getElytraDurability(), 9999));
 
-
 		LOGGER.info("Elytra Speed Multiplier set to " + CONFIG.getElytraSpeedModifier() );
 		LOGGER.info("Elytra Durability set to " + CONFIG.getElytraDurability() );
 
@@ -40,10 +35,6 @@ public class DoomsElytraMod implements ModInitializer {
 						}}
 				}
 		);
-
-
-
-
 	}
 
 
@@ -74,10 +65,9 @@ public class DoomsElytraMod implements ModInitializer {
 		double smoothing_factor = 0.3;
 		double dynamic_threshold = elytra_speed_multiplier * ((1-smoothing_factor) * max_horizontal_speed);
 
-
 		boolean angle_check = playerFlyingHorizontal(velocity);
 
-		if (velocity_length > dynamic_threshold && angle_check)
+		if ((velocity_length > dynamic_threshold) && angle_check)
 		{
 			Vec3d target_velocity = velocity.normalize().multiply(elytra_speed_multiplier * velocity_length);
 			Vec3d velocity_diff = velocity.subtract(target_velocity);
@@ -89,7 +79,6 @@ public class DoomsElytraMod implements ModInitializer {
 			player.sendAbilitiesUpdate();
 		}
 	}
-
 
 
 	/*
