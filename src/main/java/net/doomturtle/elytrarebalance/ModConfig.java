@@ -4,12 +4,20 @@ import java.io.*;
 
 public class ModConfig {
 
+    private static final String CONFIG_FOLDER_PATH = "config";
     private static final String CONFIG_FILE_PATH = "config/dooms-elytra-rebalance.toml";
     private double elytra_speed_modifier;
     private int elytra_durability;
 
     public ModConfig()
     {
+
+        File configFolder = new File(CONFIG_FOLDER_PATH);
+        if (!configFolder.exists())
+        {
+            configFolder.mkdirs();
+        }
+
         File configFile = new File(CONFIG_FILE_PATH);
 
         if (configFile.exists()) {
