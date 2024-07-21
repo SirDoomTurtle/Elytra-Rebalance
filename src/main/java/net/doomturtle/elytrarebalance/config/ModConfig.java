@@ -1,4 +1,4 @@
-package net.doomturtle.elytrarebalance;
+package net.doomturtle.elytrarebalance.config;
 
 import java.io.*;
 

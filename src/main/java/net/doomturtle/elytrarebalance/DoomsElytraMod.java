@@ -1,5 +1,6 @@
 package net.doomturtle.elytrarebalance;
 
+import net.doomturtle.elytrarebalance.config.ModConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.util.math.Vec3d;
@@ -41,7 +42,7 @@ public class DoomsElytraMod implements ModInitializer {
 	/*
 		This function is run on every player who is currently FallFlying. It checks if the Player is flying in a
 		horizontal-ish direction AND if they are exceeding the speed threshold that is influenced by the
-		elytraSpeedMultiplier variable in the config file.
+		elytra_speed_multiplier variable in the config file.
 		If this is the case, the player's velocity is smoothly reduced back down until they no longer exceed the
 		threshold. This way, players can still fly crazy fast if they dive-bomb in their elytras, but they
 		will be slowed down if they try to pull out of the dive, which makes the whole flying experience a bit
