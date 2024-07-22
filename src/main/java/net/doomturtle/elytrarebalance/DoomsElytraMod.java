@@ -3,10 +3,14 @@ package net.doomturtle.elytrarebalance;
 import net.doomturtle.elytrarebalance.config.ModConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.Vec3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.minecraft.entity.player.PlayerEntity;
+
 
 
 public class DoomsElytraMod implements ModInitializer {
@@ -27,6 +31,13 @@ public class DoomsElytraMod implements ModInitializer {
 
 		LOGGER.info("Elytra Speed Multiplier set to " + CONFIG.getElytraSpeedModifier() );
 		LOGGER.info("Elytra Durability set to " + CONFIG.getElytraDurability() );
+
+
+		DefaultItemComponentEvents.MODIFY.register(context -> {
+					context.modify(Items.ELYTRA, builder -> {
+						builder.add(DataComponentTypes.MAX_DAMAGE, DoomsElytraMod.elytra_durability_config);
+					});});
+
 
 		ServerTickEvents.START_SERVER_TICK.register(
 				server -> {

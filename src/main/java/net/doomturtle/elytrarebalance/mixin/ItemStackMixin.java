@@ -12,7 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
 
-    @Inject(method = "getMaxDamage", at = @At("HEAD"), cancellable = true)
+    /*
+        @Inject(method = "getMaxDamage", at = @At("HEAD"), cancellable = true)
     private void getMaxDamage(CallbackInfoReturnable<Integer> cir) {
         ItemStack stack = (ItemStack) (Object) this;
         if (stack.getItem() == Items.ELYTRA)
@@ -20,5 +21,6 @@ public class ItemStackMixin {
             cir.setReturnValue(DoomsElytraMod.elytra_durability_config);
         }
     }
+     */
 
 }
