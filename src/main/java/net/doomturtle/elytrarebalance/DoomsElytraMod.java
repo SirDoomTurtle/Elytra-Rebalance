@@ -1,6 +1,5 @@
 package net.doomturtle.elytrarebalance;
 
-import net.doomturtle.elytrarebalance.config.ModConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;

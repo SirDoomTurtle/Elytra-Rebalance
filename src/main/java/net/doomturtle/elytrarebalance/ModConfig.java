@@ -1,4 +1,4 @@
-package net.doomturtle.elytrarebalance.config;
+package net.doomturtle.elytrarebalance;
 
 import java.io.*;
 
@@ -41,8 +41,8 @@ public class ModConfig {
         {
             System.out.println("Config file does not exist.");
 
-            elytra_speed_modifier = 0.8; // Default value
-            elytra_durability = 800;    // Default value
+            elytra_speed_modifier = 0.8;
+            elytra_durability = 800;
             createDefaultConfigFile(configFile);
         }
     }

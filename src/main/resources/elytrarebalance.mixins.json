@@ -1,10 +1,8 @@
 {
-	"required": true,
+	"required": false,
 	"package": "net.doomturtle.elytrarebalance.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ItemStackMixin",
-		"ServerPlayerEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
